@@ -1,0 +1,123 @@
+/* 
+   ========================================
+   Portal UNACH - Custom Stylesheet
+   Theme: Institutional Blue & Clean Layout
+   ========================================
+*/
+
+:root {
+    --unach-blue: #003366;
+    --unach-blue-hover: #002244;
+    --unach-blue-light: #e6ecf2;
+    --light-gray: #f8f9fa;
+    --medium-gray: #e9ecef;
+    --text-color: #212529;
+    --card-bg: white;
+}
+
+[data-theme="dark"] {
+    --unach-blue: #004080;
+    --unach-blue-hover: #0059b3;
+    --unach-blue-light: #0d1b2a;
+    --light-gray: #121212;
+    --medium-gray: #2d2d2d;
+    --text-color: #e0e0e0;
+    --card-bg: #1e1e1e;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--text-color);
+    background-color: var(--light-gray);
+}
+
+.bg-light-gray {
+    background-color: var(--light-gray) !important;
+}
+
+/* Form Styles */
+.form-control {
+    background-color: var(--card-bg) !important;
+    color: var(--text-color) !important;
+}
+
+.input-group-text {
+    background-color: var(--card-bg) !important;
+}
+
+/* Backgrounds */
+.bg-unach {
+    background-color: var(--unach-blue) !important;
+}
+
+.text-unach {
+    color: var(--unach-blue) !important;
+}
+
+.bg-light-gray {
+    background-color: var(--light-gray);
+}
+
+.bg-gradient-unach {
+    background: linear-gradient(135deg, var(--unach-blue) 0%, rgba(0, 51, 102, 0.8) 100%);
+    background-size: cover;
+}
+
+/* Buttons */
+.btn-unach {
+    background-color: var(--unach-blue);
+    color: white;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-unach:hover {
+    background-color: var(--unach-blue-hover);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 51, 102, 0.2);
+}
+
+/* Login Card */
+.login-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+}
+
+/* Service Cards (Grid) */
+.transition-all {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.service-card {
+    background: white;
+}
+
+.service-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1) !important;
+}
+
+.icon-wrapper {
+    width: 64px;
+    height: 64px;
+    background-color: var(--unach-blue-light);
+    transition: all 0.3s ease;
+}
+
+.service-card:hover .icon-wrapper {
+    background-color: var(--unach-blue);
+}
+
+.service-card:hover .icon-wrapper i {
+    color: white !important;
+}
+
+.service-card:hover .card-title {
+    color: var(--unach-blue) !important;
+}
+
+/* Base modifications */
+.rounded-4 {
+    border-radius: 1rem !important;
+}

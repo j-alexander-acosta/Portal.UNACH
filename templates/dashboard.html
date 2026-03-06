@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Portal UNACH</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="bg-light-gray h-100">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-unach shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center" href="#">
+                <i class="bi bi-grid-3x3-gap-fill me-2"></i> Portal UNACH
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <!-- Theme Toggle -->
+                    <li class="nav-item me-3">
+                        <button class="btn btn-outline-light btn-sm rounded-circle" id="themeToggle" title="Cambiar Tema">
+                            <i class="bi bi-moon-stars-fill" id="themeIcon"></i>
+                        </button>
+                    </li>
+                    <!-- User Profile -->
+                    <li class="nav-item me-3 text-white">
+                        <i class="bi bi-person-circle me-1"></i> {{ email }}
+                        <span class="badge {% if profile == 'Admin' %}bg-danger{% else %}bg-light{% endif %} text-unach ms-2">{{ profile }}</span>
+                    </li>
+                    {% if profile == 'Admin' %}
+                    <li class="nav-item me-3">
+                        <a class="nav-link btn btn-outline-warning btn-sm text-dark px-3 fw-bold bg-warning" href="{{ url_for('admin_dashboard') }}">
+                            <i class="bi bi-gear-fill me-1"></i> Panel Admin
+                        </a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-light btn-sm text-white px-3" href="{{ url_for('logout') }}">
+                            Cerrar Sesión <i class="bi bi-box-arrow-right ms-1"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container py-5">
+        <div class="row mb-5 justify-content-center">
+            <div class="col-12 text-center mb-4">
+                {% set user_name = email.split('@')[0].replace('.', ' ').replace('_', ' ') | title %}
+                
+                {% if profile == 'Alumno' %}
+                    <h1 class="display-6 fw-bold" style="color: #005bb5;">¡{{ greeting }}, {{ user_name }}! 👋</h1>
+                    <p class="lead text-muted">Bienvenido a tu portal de servicios estudiantiles. Gestiona tus clases y matrícula desde aquí.</p>
+                {% else %}
+                    <h1 class="display-6 fw-bold text-unach">{{ greeting }} estimado(a) {{ user_name }}, bienvenido(a) al Portal UNACH</h1>
+                    <p class="lead text-muted">Accede a tus herramientas de gestión docente y directiva para este periodo</p>
+                {% endif %}
+            </div>
+            <div class="col-md-8 col-lg-6">
+                <div class="input-group input-group-lg shadow-sm rounded-4">
+                    <span class="input-group-text bg-white border-end-0 rounded-start-4 text-muted"><i class="bi bi-search"></i></span>
+                    <input type="text" class="form-control border-start-0 rounded-end-4" id="searchLinks" placeholder="Buscar servicios (ej. Biblioteca, SIGAE...)" aria-label="Buscar servicios">
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            {% for link in links %}
+            <div class="col-6 col-md-4 col-lg-3 link-card-container">
+                <a href="{{ link.url }}" target="_blank" class="text-decoration-none">
+                    <div class="card h-100 service-card border-0 shadow-sm rounded-4 text-center transition-all">
+                        <div class="card-body d-flex flex-column align-items-center justify-content-center p-4">
+                            <div class="icon-wrapper mb-3 rounded-circle d-flex align-items-center justify-content-center shadow-sm">
+                                <i class="bi {{ link.icon }} fs-1 text-unach icon-unach"></i>
+                            </div>
+                            <h5 class="card-title text-dark fw-semibold mb-0 link-name">{{ link.name }}</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="bg-white py-4 mt-auto border-top text-center text-muted">
+        <div class="container">
+            <small>&copy; 2026 Universidad Adventista de Chile. Todos los derechos reservados.</small>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS (Search & Theme) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Search functionality
+            const searchInput = document.getElementById('searchLinks');
+            const linkContainers = document.querySelectorAll('.link-card-container');
+            
+            searchInput.addEventListener('input', function(e) {
+                const term = e.target.value.toLowerCase().trim();
+                
+                linkContainers.forEach(container => {
+                    const name = container.querySelector('.link-name').textContent.toLowerCase();
+                    if (name.includes(term)) {
+                        container.style.display = 'block';
+                    } else {
+                        container.style.display = 'none';
+                    }
+                });
+            });
+
+            // Dark Mode Toggle
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            const body = document.body;
+            
+            // Check saved theme
+            const savedTheme = localStorage.getItem('portalTheme');
+            if (savedTheme === 'dark') {
+                body.setAttribute('data-theme', 'dark');
+                themeIcon.classList.replace('bi-moon-stars-fill', 'bi-sun-fill');
+            }
+
+            themeToggle.addEventListener('click', () => {
+                const isDark = body.getAttribute('data-theme') === 'dark';
+                
+                if (isDark) {
+                    body.removeAttribute('data-theme');
+                    localStorage.setItem('portalTheme', 'light');
+                    themeIcon.classList.replace('bi-sun-fill', 'bi-moon-stars-fill');
+                } else {
+                    body.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('portalTheme', 'dark');
+                    themeIcon.classList.replace('bi-moon-stars-fill', 'bi-sun-fill');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
