@@ -88,17 +88,18 @@ def dashboard():
         greeting = "Buenas noches"
     
     # Query database for active links
-    common_links = ServiceLink.query.filter_by(category='comunes', is_active=True).order_by(ServiceLink.order).all()
+    common_links = ServiceLink.query.filter_by(category='comunes', is_active=True).all()
     
     profile_links = []
     if profile == 'Alumno':
-        profile_links = ServiceLink.query.filter_by(category='alumnos', is_active=True).order_by(ServiceLink.order).all()
+        profile_links = ServiceLink.query.filter_by(category='alumnos', is_active=True).all()
     elif profile in ['Funcionario', 'Admin']:
-        profile_links = ServiceLink.query.filter_by(category='funcionarios', is_active=True).order_by(ServiceLink.order).all()
+        profile_links = ServiceLink.query.filter_by(category='funcionarios', is_active=True).all()
         
-    all_links = common_links + profile_links
+    all_links = sorted(common_links + profile_links, key=lambda x: x.order)
         
     return render_template('dashboard.html', profile=profile, email=session.get('email', ''), links=all_links, greeting=greeting)
+
 
 
 @app.route('/logout')
@@ -121,7 +122,7 @@ def admin_required(f):
 @app.route('/admin')
 @admin_required
 def admin_dashboard():
-    links = ServiceLink.query.order_by(ServiceLink.category, ServiceLink.order).all()
+    links = ServiceLink.query.order_by(ServiceLink.order).all()
     return render_template('admin.html', links=links, email=session.get('email'))
 
 @app.route('/admin/link/add', methods=['POST'])
@@ -155,6 +156,20 @@ def admin_link_toggle(link_id):
     link.is_active = not link.is_active
     db.session.commit()
     flash(f"Enlace '{link.name}' {'activado' if link.is_active else 'desactivado'}.", 'success')
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/link/edit/<int:link_id>', methods=['POST'])
+@admin_required
+def admin_link_edit(link_id):
+    link = ServiceLink.query.get_or_404(link_id)
+    link.name = request.form.get('name')
+    link.url = request.form.get('url')
+    link.icon = request.form.get('icon')
+    link.category = request.form.get('category')
+    link.order = request.form.get('order', type=int, default=0)
+    
+    db.session.commit()
+    flash('Enlace editado exitosamente.', 'success')
     return redirect(url_for('admin_dashboard'))
 
 
