@@ -98,6 +98,19 @@ body {
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1) !important;
 }
 
+.support-card {
+    background: white;
+}
+
+.support-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+.support-card:hover i {
+    color: var(--unach-blue-hover) !important;
+}
+
 .icon-wrapper {
     width: 64px;
     height: 64px;
