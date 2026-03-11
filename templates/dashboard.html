@@ -101,7 +101,7 @@
         <div class="row g-3 justify-content-center">
             <!-- Correo -->
             <div class="col-6 col-md-4 col-lg-2">
-                <a href="mailto:soporte.correos@unach.cl" class="text-decoration-none">
+                <a href="mailto:soporte.correos@unach.cl" class="text-decoration-none support-link" data-email="soporte.correos@unach.cl" title="Clic para copiar">
                     <div class="card h-100 support-card border-0 shadow-sm rounded-4 text-center transition-all">
                         <div class="card-body p-3">
                             <i class="bi bi-envelope fs-3 text-unach mb-2 d-block"></i>
@@ -112,7 +112,7 @@
             </div>
             <!-- U+ -->
             <div class="col-6 col-md-4 col-lg-2">
-                <a href="mailto:soporte.umas@unach.cl" class="text-decoration-none">
+                <a href="mailto:soporte.umas@unach.cl" class="text-decoration-none support-link" data-email="soporte.umas@unach.cl" title="Clic para copiar">
                     <div class="card h-100 support-card border-0 shadow-sm rounded-4 text-center transition-all">
                         <div class="card-body p-3">
                             <i class="bi bi-mortarboard fs-3 text-unach mb-2 d-block"></i>
@@ -123,7 +123,7 @@
             </div>
             <!-- Sacint -->
             <div class="col-6 col-md-4 col-lg-2">
-                <a href="mailto:soporte.sacint@unach.cl" class="text-decoration-none">
+                <a href="mailto:soporte.sacint@unach.cl" class="text-decoration-none support-link" data-email="soporte.sacint@unach.cl" title="Clic para copiar">
                     <div class="card h-100 support-card border-0 shadow-sm rounded-4 text-center transition-all">
                         <div class="card-body p-3">
                             <i class="bi bi-globe fs-3 text-unach mb-2 d-block"></i>
@@ -134,7 +134,7 @@
             </div>
             <!-- Campus Virtual -->
             <div class="col-6 col-md-4 col-lg-2">
-                <a href="mailto:jefevirtualunach@unach.cl" class="text-decoration-none">
+                <a href="mailto:jefevirtualunach@unach.cl" class="text-decoration-none support-link" data-email="jefevirtualunach@unach.cl" title="Clic para copiar">
                     <div class="card h-100 support-card border-0 shadow-sm rounded-4 text-center transition-all">
                         <div class="card-body p-3">
                             <i class="bi bi-laptop fs-3 text-unach mb-2 d-block"></i>
@@ -145,7 +145,7 @@
             </div>
             <!-- Biblioteca -->
             <div class="col-6 col-md-4 col-lg-2">
-                <a href="mailto:soporteinformatico@unach.cl" class="text-decoration-none">
+                <a href="mailto:soporteinformatico@unach.cl" class="text-decoration-none support-link" data-email="soporteinformatico@unach.cl" title="Clic para copiar">
                     <div class="card h-100 support-card border-0 shadow-sm rounded-4 text-center transition-all">
                         <div class="card-body p-3">
                             <i class="bi bi-book fs-3 text-unach mb-2 d-block"></i>
@@ -156,7 +156,7 @@
             </div>
             <!-- DAIE -->
             <div class="col-6 col-md-4 col-lg-2">
-                <a href="mailto:informaticodaie@unach.cl" class="text-decoration-none">
+                <a href="mailto:informaticodaie@unach.cl" class="text-decoration-none support-link" data-email="informaticodaie@unach.cl" title="Clic para copiar">
                     <div class="card h-100 support-card border-0 shadow-sm rounded-4 text-center transition-all">
                         <div class="card-body p-3">
                             <i class="bi bi-info-circle fs-3 text-unach mb-2 d-block"></i>
@@ -222,6 +222,38 @@
                     localStorage.setItem('portalTheme', 'dark');
                     themeIcon.classList.replace('bi-moon-stars-fill', 'bi-sun-fill');
                 }
+            });
+
+            // Support links copy functionality
+            const supportLinks = document.querySelectorAll('.support-link');
+            supportLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const email = this.getAttribute('data-email');
+                    if(email) {
+                        navigator.clipboard.writeText(email).then(() => {
+                            const icon = this.querySelector('i.bi');
+                            const textElem = this.querySelector('h6');
+                            const originalClass = icon.className;
+                            const originalText = textElem.innerText;
+                            
+                            icon.className = 'bi bi-check-circle-fill fs-3 text-success mb-2 d-block';
+                            textElem.innerText = '¡Copiado!';
+                            if (textElem.classList.contains('text-dark')) {
+                                textElem.classList.replace('text-dark', 'text-success');
+                            } else {
+                                textElem.classList.add('text-success');
+                            }
+                            
+                            setTimeout(() => {
+                                icon.className = originalClass;
+                                textElem.innerText = originalText;
+                                textElem.classList.replace('text-success', 'text-dark');
+                            }, 2000);
+                        }).catch(err => {
+                            console.error('Failed to copy email: ', err);
+                        });
+                    }
+                });
             });
         });
     </script>
