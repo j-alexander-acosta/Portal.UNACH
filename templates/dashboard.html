@@ -73,16 +73,16 @@
             </div>
         </div>
 
-        <div class="row g-4 justify-content-center">
+        <div class="row g-3 justify-content-center">
             {% for link in links if 'Tutoriales' not in link.name %}
-            <div class="col-6 col-md-4 col-lg-3 link-card-container">
+            <div class="col-6 col-md-3 col-lg-2 link-card-container">
                 <a href="{{ link.url }}" target="_blank" class="text-decoration-none">
                     <div class="card h-100 service-card border-0 shadow-sm rounded-4 text-center transition-all">
-                        <div class="card-body d-flex flex-column align-items-center justify-content-center p-4">
-                            <div class="icon-wrapper mb-3 rounded-circle d-flex align-items-center justify-content-center shadow-sm">
-                                <i class="bi {{ link.icon }} fs-1 text-unach icon-unach"></i>
+                        <div class="card-body d-flex flex-column align-items-center justify-content-center p-3">
+                            <div class="icon-wrapper mb-2 rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 54px; height: 54px;">
+                                <i class="bi {{ link.icon }} fs-2 text-unach icon-unach"></i>
                             </div>
-                            <h5 class="card-title text-dark fw-semibold mb-0 link-name">{{ link.name }}</h5>
+                            <h6 class="card-title text-dark fw-semibold mb-0 link-name" style="font-size: 0.95rem;">{{ link.name }}</h6>
                         </div>
                     </div>
                 </a>
