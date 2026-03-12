@@ -13,13 +13,14 @@ El **Portal UNACH** es una plataforma centralizada (HUB) desarrollada en Python 
     *   **Mensajes por Rol:** Los alumnos y los funcionarios reciben textos de bienvenida, instrucciones y colores de acento distintos.
     *   **Procesamiento de Email:** Toma nombres formados como `juan.perez@alu.unach.cl` y los formatea elegantemente a "Juan Perez" en la interfaz.
 *   **Experiencia de Usuario (UX/UI):**
+    *   **Agrupación Dinámica:** Los enlaces se clasifican y muestran en 3 distintas secciones lógicas: Servicios Principales, Tutoriales y Contacto de Soporte.
     *   **Buscador en Tiempo Real:** Permite a los usuarios buscar un enlace específico en la pantalla escribiendo su nombre (ej. "SIGAE").
     *   **Modo Oscuro (Dark Mode):** Alternador de tema persistente gestionado mediante `localStorage`.
     *   Diseño limpio usando componentes de Bootstrap 5 e iconos Bootstrap (Bootstrap Icons).
 *   **Panel de Administración (Backend CRUD):**
     *   Usuarios designados en el archivo protegido `.env` obtienen permisos de administrador.
-    *   El administrador cuenta con una interfaz web en `/admin` para agregar, editar (cambiar estado visible/oculto) y eliminar enlaces de la base de datos sin necesidad de tocar código.
-    *   **Sistema de Doble Verificación:** Un administrador debe pasar por una doble autenticación (correo validado y luego petición de contraseña cifrada) para ver la opción del Panel Admin.
+    *   El administrador cuenta con una interfaz web en `/admin` para agregar, editar, categorizar por sección y eliminar enlaces de la base de datos sin necesidad de tocar código. También soporta agrupación visual por sección (Principal, Tutoriales, Soporte).
+    *   **Sistema de Doble Verificación:** Un administrador debe pasar por una doble autenticación para ver la opción del Panel Admin.
 *   **Seguridad Refinada:**
     *   Las sesiones caducan automáticamente luego de 60 minutos de inactividad, ideal para usar en laboratorios de la universidad.
     *   Bloqueos para accesos no autorizados a las URL directas como `/dashboard` o `/admin`.
