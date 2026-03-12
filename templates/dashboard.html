@@ -58,11 +58,11 @@
                 {% set user_name = email.split('@')[0].replace('.', ' ').replace('_', ' ') | title %}
                 
                 {% if profile == 'Alumno' %}
-                    <h1 class="display-6 fw-bold" style="color: #005bb5;">¡{{ greeting }}, {{ user_name }}! 👋</h1>
-                    <p class="lead text-muted">Bienvenido a tu portal de servicios estudiantiles. Gestiona tus clases y matrícula desde aquí.</p>
+                    <h3 class="fw-bold" style="color: #005bb5;">¡{{ greeting }}, {{ user_name }}! 👋</h3>
+                    <p class="text-muted mb-0">Bienvenido a tu portal de servicios estudiantiles. Gestiona tus clases y matrícula desde aquí.</p>
                 {% else %}
-                    <h1 class="display-6 fw-bold text-unach">{{ greeting }} estimado(a) {{ user_name }}, bienvenido(a) al Portal UNACH</h1>
-                    <p class="lead text-muted">Accede a tus herramientas de gestión docente y directiva para este periodo</p>
+                    <h3 class="fw-bold text-unach">{{ greeting }} estimado(a) {{ user_name }}, bienvenido(a) al Portal UNACH</h3>
+                    <p class="text-muted mb-0">Accede a tus herramientas de gestión docente y directiva para este periodo</p>
                 {% endif %}
             </div>
             <div class="col-md-8 col-lg-6">
@@ -98,16 +98,16 @@
             </div>
         </div>
 
-        <div class="row g-4 justify-content-center mb-5">
+        <div class="row g-3 justify-content-center mb-5">
             {% for link in links if link.section == 'tutorial' %}
-            <div class="col-6 col-md-4 col-lg-3 link-card-container">
+            <div class="col-6 col-md-3 col-lg-2 link-card-container">
                 <a href="{{ link.url }}" target="_blank" class="text-decoration-none">
                     <div class="card h-100 service-card border-0 shadow-sm rounded-4 text-center transition-all">
-                        <div class="card-body d-flex flex-column align-items-center justify-content-center p-4">
-                            <div class="icon-wrapper mb-3 rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="background-color: #ffe6e6;">
-                                <i class="bi {{ link.icon }} fs-1" style="color: #FF0000;"></i>
+                        <div class="card-body d-flex flex-column align-items-center justify-content-center p-3">
+                            <div class="icon-wrapper mb-2 rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 54px; height: 54px; background-color: #ffe6e6;">
+                                <i class="bi {{ link.icon }} fs-2" style="color: #FF0000;"></i>
                             </div>
-                            <h5 class="card-title text-dark fw-semibold mb-0 link-name">{{ link.name }}</h5>
+                            <h6 class="card-title text-dark fw-semibold mb-0 link-name" style="font-size: 0.95rem;">{{ link.name }}</h6>
                         </div>
                     </div>
                 </a>
@@ -125,14 +125,16 @@
 
         <div class="row g-3 justify-content-center">
             {% for link in links if link.section == 'support' %}
-            <div class="col-6 col-md-4 col-lg-2 link-card-container">
+            <div class="col-6 col-md-3 col-lg-2 link-card-container">
                 <!-- Using link.url and splitting the email for the clipboard copy -->
                 <a href="{{ link.url }}" target="_blank" class="text-decoration-none support-link" 
                    data-email="{% if 'to=' in link.url %}{{ link.url.split('to=')[1] }}{% else %}{{ link.url }}{% endif %}" title="Clic para copiar">
-                    <div class="card h-100 support-card border-0 shadow-sm rounded-4 text-center transition-all">
-                        <div class="card-body p-3">
-                            <i class="bi {{ link.icon }} fs-3 text-unach mb-2 d-block"></i>
-                            <h6 class="card-title text-dark fw-semibold mb-0" style="font-size: 0.9rem;">{{ link.name }}</h6>
+                    <div class="card h-100 service-card border-0 shadow-sm rounded-4 text-center transition-all">
+                        <div class="card-body d-flex flex-column align-items-center justify-content-center p-3">
+                            <div class="icon-wrapper mb-2 rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 54px; height: 54px;">
+                                <i class="bi {{ link.icon }} fs-2 text-unach icon-unach"></i>
+                            </div>
+                            <h6 class="card-title text-dark fw-semibold mb-0 link-name" style="font-size: 0.95rem;">{{ link.name }}</h6>
                         </div>
                     </div>
                 </a>
@@ -209,7 +211,7 @@
                             const originalClass = icon.className;
                             const originalText = textElem.innerText;
                             
-                            icon.className = 'bi bi-check-circle-fill fs-3 text-success mb-2 d-block';
+                            icon.className = 'bi bi-check-circle-fill fs-2 text-success icon-unach';
                             textElem.innerText = '¡Copiado!';
                             if (textElem.classList.contains('text-dark')) {
                                 textElem.classList.replace('text-dark', 'text-success');
