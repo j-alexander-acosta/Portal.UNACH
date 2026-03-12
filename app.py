@@ -132,9 +132,10 @@ def admin_link_add():
     url = request.form.get('url')
     icon = request.form.get('icon')
     category = request.form.get('category')
+    section = request.form.get('section', 'main')
     order = request.form.get('order', type=int, default=0)
     
-    new_link = ServiceLink(name=name, url=url, icon=icon, category=category, order=order)
+    new_link = ServiceLink(name=name, url=url, icon=icon, category=category, section=section, order=order)
     db.session.add(new_link)
     db.session.commit()
     flash('Enlace agregado exitosamente.', 'success')
@@ -166,6 +167,7 @@ def admin_link_edit(link_id):
     link.url = request.form.get('url')
     link.icon = request.form.get('icon')
     link.category = request.form.get('category')
+    link.section = request.form.get('section', 'main')
     link.order = request.form.get('order', type=int, default=0)
     
     db.session.commit()

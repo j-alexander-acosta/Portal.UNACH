@@ -1,55 +1,12 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administración - Portal UNACH</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <!-- Custom Styles -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<body class="bg-light-gray h-100">
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-unach shadow-sm">
-        <div class="container">
-            <a class="navbar-brand fw-bold d-flex align-items-center" href="{{ url_for('dashboard') }}">
-                <i class="bi bi-gear-fill me-2"></i> Portal UNACH - Admin
-            </a>
-            <div class="d-flex align-items-center">
-                <span class="text-white me-3"><i class="bi bi-person-badge-fill me-1"></i> {{ email }}</span>
-                <a class="btn btn-outline-light btn-sm" href="{{ url_for('dashboard') }}"><i class="bi bi-arrow-left"></i> Volver</a>
-            </div>
-        </div>
-    </nav>
+import sys
 
-    <div class="container py-5">
-        
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
+def rewrite_admin():
+    file_path = '/Users/alexanderacosta/Documents/Proyectos/portal.unach/templates/admin.html'
+    with open(file_path, 'r', encoding='utf-8') as f:
+        content = f.read()
 
-        <div class="row mb-4 align-items-center">
-            <div class="col-md-6">
-                <h2 class="fw-bold text-unach mb-0">Gestión de Enlaces</h2>
-            </div>
-            <div class="col-md-6 text-end">
-                <button class="btn btn-unach fw-semibold" data-bs-toggle="modal" data-bs-target="#addLinkModal">
-                    <i class="bi bi-plus-circle me-1"></i> Agregar Nuevo Enlace
-                </button>
-            </div>
-        </div>
-
-        
+    # 1. Macro definition replacing the single table.
+    macro_start = """
         {% macro render_links_table(table_title, section_links) %}
         <h4 class="fw-bold mt-4 mb-3 text-secondary">{{ table_title }}</h4>
         <div class="card shadow-sm border-0 rounded-4 mb-4">
@@ -69,7 +26,34 @@
                         </thead>
                         <tbody>
                             {% for link in section_links %}
-
+"""
+    
+    # 2. Extract the inner part of the loop from original (lines 69 to 143)
+    start_tag = "{% for link in links %}"
+    end_tag = "{% endfor %}"
+    
+    start_idx = content.find(start_tag)
+    end_idx = content.find(end_tag) + len(end_tag)
+    
+    inner_loop = content[start_idx + len(start_tag) : end_idx - len(end_tag)]
+    
+    # We need to add the section select in the edit modal inside inner_loop
+    edit_modal_marker = '<div class="row">'
+    section_select_edit = """
+                                                            <div class="col-md-6 mb-3">
+                                                                <label class="form-label fw-semibold">Sección</label>
+                                                                <select class="form-select" name="section" required>
+                                                                    <option value="main" {% if link.section == 'main' %}selected{% endif %}>Principal</option>
+                                                                    <option value="tutorial" {% if link.section == 'tutorial' %}selected{% endif %}>Tutorial</option>
+                                                                    <option value="support" {% if link.section == 'support' %}selected{% endif %}>Soporte</option>
+                                                                </select>
+                                                            </div>
+"""
+    
+    # Let's insert the section_select right before the category select
+    # The existing code has <div class="col-md-6 mb-3"> for Categoría. We will change the row to have 3 cols or just add another row.
+    # It's easier to replace the <div class="row"> content.
+    edit_row_replacement = """
                                                         <div class="row">
                                                             <div class="col-md-4 mb-3">
                                                                 <label class="form-label fw-semibold">Sección</label>
@@ -92,7 +76,14 @@
                                                                 <input type="number" class="form-control" name="order" value="{{ link.order }}" required>
                                                             </div>
                                                         </div>
+"""
+    
+    # Find the row in inner_loop and replace
+    row_start_idx = inner_loop.find('<div class="row">')
+    row_end_idx = inner_loop.find('</div>\n                                                    </div>', row_start_idx)
+    inner_loop = inner_loop[:row_start_idx] + edit_row_replacement + inner_loop[row_end_idx:]
 
+    macro_end = """
                             {% endfor %}
                             {% if not section_links %}
                             <tr><td colspan="7" class="text-center text-muted py-3">No hay enlaces en esta sección.</td></tr>
@@ -107,30 +98,18 @@
         {{ render_links_table('Servicios Principales', links | selectattr('section', 'equalto', 'main') | list) }}
         {{ render_links_table('Tutoriales', links | selectattr('section', 'equalto', 'tutorial') | list) }}
         {{ render_links_table('Contacto de Soporte', links | selectattr('section', 'equalto', 'support') | list) }}
-
-    <!-- Modal para Agregar Enlace -->
-    <div class="modal fade" id="addLinkModal" tabindex="-1" aria-labelledby="addLinkModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content border-0 shadow rounded-4">
-                <div class="modal-header bg-light">
-                    <h5 class="modal-title fw-bold text-unach" id="addLinkModalLabel">Nuevo Enlace Institucional</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="{{ url_for('admin_link_add') }}" method="POST">
-                    <div class="modal-body p-4">
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Nombre del Servicio</label>
-                            <input type="text" class="form-control" name="name" required placeholder="Ej. Portal de Notas">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">URL de Destino</label>
-                            <input type="url" class="form-control" name="url" required placeholder="https://...">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Clase de Icono (<a href="https://icons.getbootstrap.com/" target="_blank">Bootstrap Icons</a>)</label>
-                            <input type="text" class="form-control" name="icon" required placeholder="Ej. bi-journal-text">
-                        </div>
-                        
+"""
+    
+    # Replace the whole <div class="card shadow-sm border-0 rounded-4"> up to </div>\n    </div>\n\n    <!-- Modal
+    card_start = content.find('<div class="card shadow-sm border-0 rounded-4">')
+    card_end = content.find('    <!-- Modal para Agregar Enlace -->')
+    
+    new_table_block = macro_start + inner_loop + macro_end + "\n"
+    
+    content = content[:card_start] + new_table_block + content[card_end:]
+    
+    # Now fix the Add Modal
+    add_row_replacement = """
                         <div class="row">
                             <div class="col-md-4 mb-3">
                                 <label class="form-label fw-semibold">Sección</label>
@@ -153,18 +132,13 @@
                                 <input type="number" class="form-control" name="order" value="100" required>
                             </div>
                         </div>
-</div>
-                    </div>
-                    <div class="modal-footer bg-light">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-unach">Guardar Enlace</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+"""
+    add_row_start = content.rfind('<div class="row">')
+    add_row_end = content.find('</div>\n                    </div>\n                    <div class="modal-footer bg-light">', add_row_start)
+    content = content[:add_row_start] + add_row_replacement + content[add_row_end:]
 
-    <!-- Bootstrap 5 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+    with open(file_path, 'w', encoding='utf-8') as f:
+        f.write(content)
+
+if __name__ == '__main__':
+    rewrite_admin()

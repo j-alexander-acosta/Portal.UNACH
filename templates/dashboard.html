@@ -74,7 +74,7 @@
         </div>
 
         <div class="row g-3 justify-content-center">
-            {% for link in links if 'Tutoriales' not in link.name %}
+            {% for link in links if link.section == 'main' %}
             <div class="col-6 col-md-3 col-lg-2 link-card-container">
                 <a href="{{ link.url }}" target="_blank" class="text-decoration-none">
                     <div class="card h-100 service-card border-0 shadow-sm rounded-4 text-center transition-all">
@@ -99,7 +99,7 @@
         </div>
 
         <div class="row g-4 justify-content-center mb-5">
-            {% for link in links if 'Tutoriales' in link.name %}
+            {% for link in links if link.section == 'tutorial' %}
             <div class="col-6 col-md-4 col-lg-3 link-card-container">
                 <a href="{{ link.url }}" target="_blank" class="text-decoration-none">
                     <div class="card h-100 service-card border-0 shadow-sm rounded-4 text-center transition-all">
@@ -124,72 +124,20 @@
         </div>
 
         <div class="row g-3 justify-content-center">
-            <!-- Correo -->
-            <div class="col-6 col-md-4 col-lg-2">
-                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=soporte.correos@unach.cl" target="_blank" class="text-decoration-none support-link" data-email="soporte.correos@unach.cl" title="Clic para copiar">
+            {% for link in links if link.section == 'support' %}
+            <div class="col-6 col-md-4 col-lg-2 link-card-container">
+                <!-- Using link.url and splitting the email for the clipboard copy -->
+                <a href="{{ link.url }}" target="_blank" class="text-decoration-none support-link" 
+                   data-email="{% if 'to=' in link.url %}{{ link.url.split('to=')[1] }}{% else %}{{ link.url }}{% endif %}" title="Clic para copiar">
                     <div class="card h-100 support-card border-0 shadow-sm rounded-4 text-center transition-all">
                         <div class="card-body p-3">
-                            <i class="bi bi-envelope fs-3 text-unach mb-2 d-block"></i>
-                            <h6 class="card-title text-dark fw-semibold mb-0" style="font-size: 0.9rem;">Correos</h6>
+                            <i class="bi {{ link.icon }} fs-3 text-unach mb-2 d-block"></i>
+                            <h6 class="card-title text-dark fw-semibold mb-0" style="font-size: 0.9rem;">{{ link.name }}</h6>
                         </div>
                     </div>
                 </a>
             </div>
-            <!-- U+ -->
-            <div class="col-6 col-md-4 col-lg-2">
-                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=soporte.umas@unach.cl" target="_blank" class="text-decoration-none support-link" data-email="soporte.umas@unach.cl" title="Clic para copiar">
-                    <div class="card h-100 support-card border-0 shadow-sm rounded-4 text-center transition-all">
-                        <div class="card-body p-3">
-                            <i class="bi bi-mortarboard fs-3 text-unach mb-2 d-block"></i>
-                            <h6 class="card-title text-dark fw-semibold mb-0" style="font-size: 0.9rem;">U+</h6>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <!-- Sacint -->
-            <div class="col-6 col-md-4 col-lg-2">
-                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=soporte.sacint@unach.cl" target="_blank" class="text-decoration-none support-link" data-email="soporte.sacint@unach.cl" title="Clic para copiar">
-                    <div class="card h-100 support-card border-0 shadow-sm rounded-4 text-center transition-all">
-                        <div class="card-body p-3">
-                            <i class="bi bi-globe fs-3 text-unach mb-2 d-block"></i>
-                            <h6 class="card-title text-dark fw-semibold mb-0" style="font-size: 0.9rem;">Sacint</h6>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <!-- Campus Virtual -->
-            <div class="col-6 col-md-4 col-lg-2">
-                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=jefevirtualunach@unach.cl" target="_blank" class="text-decoration-none support-link" data-email="jefevirtualunach@unach.cl" title="Clic para copiar">
-                    <div class="card h-100 support-card border-0 shadow-sm rounded-4 text-center transition-all">
-                        <div class="card-body p-3">
-                            <i class="bi bi-laptop fs-3 text-unach mb-2 d-block"></i>
-                            <h6 class="card-title text-dark fw-semibold mb-0" style="font-size: 0.9rem;">Campus Virtual</h6>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <!-- Biblioteca -->
-            <div class="col-6 col-md-4 col-lg-2">
-                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=soporteinformatico@unach.cl" target="_blank" class="text-decoration-none support-link" data-email="soporteinformatico@unach.cl" title="Clic para copiar">
-                    <div class="card h-100 support-card border-0 shadow-sm rounded-4 text-center transition-all">
-                        <div class="card-body p-3">
-                            <i class="bi bi-book fs-3 text-unach mb-2 d-block"></i>
-                            <h6 class="card-title text-dark fw-semibold mb-0" style="font-size: 0.9rem;">Biblioteca</h6>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <!-- DAIE -->
-            <div class="col-6 col-md-4 col-lg-2">
-                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=informaticodaie@unach.cl" target="_blank" class="text-decoration-none support-link" data-email="informaticodaie@unach.cl" title="Clic para copiar">
-                    <div class="card h-100 support-card border-0 shadow-sm rounded-4 text-center transition-all">
-                        <div class="card-body p-3">
-                            <i class="bi bi-info-circle fs-3 text-unach mb-2 d-block"></i>
-                            <h6 class="card-title text-dark fw-semibold mb-0" style="font-size: 0.9rem;">DAIE</h6>
-                        </div>
-                    </div>
-                </a>
-            </div>
+            {% endfor %}
         </div>
     </div>
     
