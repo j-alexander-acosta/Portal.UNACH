@@ -42,8 +42,8 @@ Sigue estos pasos para desplegar el proyecto en un entorno de pruebas:
 
 1. **Clonar el proyecto:**
     ```bash
-    git clone https://github.com/tu-usuario/portal-unach.git
-    cd portal-unach
+    git clone https://github.com/j-alexander-acosta/Portal.UNACH.git
+    cd Portal.UNACH
     ```
 
 2. **Crear y activar un entorno virtual (Recomendado):**
