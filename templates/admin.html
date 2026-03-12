@@ -164,7 +164,6 @@
     {% set has_main = true %}
     {{ render_admin_row(link) }}
 {% endfor %}
-{% if not has_main %}<tr><td colspan="8" class="text-center text-muted py-3">No hay enlaces registrados.</td></tr>{% endif %}
 
 <tr class="table-light"><th colspan="8" class="text-unach fw-bold py-3 ps-4 fs-5 border-top"><i class="bi bi-youtube me-2" style="color:#FF0000;"></i>Tutoriales</th></tr>
 {% set has_tutorial = false %}
@@ -172,7 +171,6 @@
     {% set has_tutorial = true %}
     {{ render_admin_row(link) }}
 {% endfor %}
-{% if not has_tutorial %}<tr><td colspan="8" class="text-center text-muted py-3">No hay enlaces registrados.</td></tr>{% endif %}
 
 <tr class="table-light"><th colspan="8" class="text-unach fw-bold py-3 ps-4 fs-5 border-top"><i class="bi bi-headset me-2"></i>Contacto de Soporte</th></tr>
 {% set has_support = false %}
@@ -180,7 +178,6 @@
     {% set has_support = true %}
     {{ render_admin_row(link) }}
 {% endfor %}
-{% if not has_support %}<tr><td colspan="8" class="text-center text-muted py-3">No hay enlaces registrados.</td></tr>{% endif %}
                         </tbody>
                     </table>
                 </div>
