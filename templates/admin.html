@@ -50,8 +50,7 @@
         </div>
 
         
-        {% macro render_links_table(table_title, section_links) %}
-        <h4 class="fw-bold mt-4 mb-3 text-secondary">{{ table_title }}</h4>
+        {% macro render_links_table(section_links) %}
         <div class="card shadow-sm border-0 rounded-4 mb-4">
             <div class="card-body p-0">
                 <div class="table-responsive">
@@ -104,9 +103,49 @@
         </div>
         {% endmacro %}
         
-        {{ render_links_table('Servicios Principales', links | selectattr('section', 'equalto', 'main') | list) }}
-        {{ render_links_table('Tutoriales', links | selectattr('section', 'equalto', 'tutorial') | list) }}
-        {{ render_links_table('Contacto de Soporte', links | selectattr('section', 'equalto', 'support') | list) }}
+        <!-- Tabs Nav -->
+        <ul class="nav nav-tabs mb-4 border-0" id="adminTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active px-4 py-3 fw-bold rounded-top-3 text-unach" id="main-tab" data-bs-toggle="tab" data-bs-target="#main-pane" type="button" role="tab" aria-controls="main-pane" aria-selected="true" style="border: none; border-bottom: 3px solid transparent;">
+                    <i class="bi bi-grid-fill me-2"></i> Servicios Principales
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link px-4 py-3 fw-bold rounded-top-3 text-muted" id="tutorial-tab" data-bs-toggle="tab" data-bs-target="#tutorial-pane" type="button" role="tab" aria-controls="tutorial-pane" aria-selected="false" style="border: none; border-bottom: 3px solid transparent;">
+                    <i class="bi bi-youtube me-2"></i> Tutoriales
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link px-4 py-3 fw-bold rounded-top-3 text-muted" id="support-tab" data-bs-toggle="tab" data-bs-target="#support-pane" type="button" role="tab" aria-controls="support-pane" aria-selected="false" style="border: none; border-bottom: 3px solid transparent;">
+                    <i class="bi bi-headset me-2"></i> Soporte
+                </button>
+            </li>
+        </ul>
+
+        <style>
+            .nav-tabs .nav-link.active {
+                background-color: transparent !important;
+                border-bottom: 3px solid var(--unach-blue) !important;
+                color: var(--unach-blue) !important;
+            }
+            .nav-tabs .nav-link:hover {
+                border-bottom: 3px solid #ccc !important;
+                color: #555 !important;
+            }
+        </style>
+
+        <!-- Tabs Content -->
+        <div class="tab-content" id="adminTabsContent">
+            <div class="tab-pane fade show active" id="main-pane" role="tabpanel" aria-labelledby="main-tab" tabindex="0">
+                {{ render_links_table(links | selectattr('section', 'equalto', 'main') | list) }}
+            </div>
+            <div class="tab-pane fade" id="tutorial-pane" role="tabpanel" aria-labelledby="tutorial-tab" tabindex="0">
+                {{ render_links_table(links | selectattr('section', 'equalto', 'tutorial') | list) }}
+            </div>
+            <div class="tab-pane fade" id="support-pane" role="tabpanel" aria-labelledby="support-tab" tabindex="0">
+                {{ render_links_table(links | selectattr('section', 'equalto', 'support') | list) }}
+            </div>
+        </div>
 
     <!-- Modal para Agregar Enlace -->
     <div class="modal fade" id="addLinkModal" tabindex="-1" aria-labelledby="addLinkModalLabel" aria-hidden="true">
