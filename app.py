@@ -95,8 +95,18 @@ def dashboard():
         profile_links = ServiceLink.query.filter_by(category='funcionarios', is_active=True).all()
         
     all_links = sorted(common_links + profile_links, key=lambda x: x.order)
+    
+    # Extract username from email
+    email = session.get('email', '')
+    username = email.split('@')[0] if email else 'Usuario'
+    user_data = {'username': username}
         
-    return render_template('dashboard.html', profile=profile, email=session.get('email', ''), links=all_links, greeting=greeting)
+    return render_template('dashboard.html', 
+                         profile=profile, 
+                         email=email, 
+                         links=all_links, 
+                         greeting=greeting,
+                         user=user_data)
 
 
 
@@ -129,11 +139,12 @@ def admin_link_add():
     name = request.form.get('name')
     url = request.form.get('url')
     icon = request.form.get('icon')
+    description = request.form.get('description')
     category = request.form.get('category')
     section = request.form.get('section', 'main')
     order = request.form.get('order', type=int, default=0)
     
-    new_link = ServiceLink(name=name, url=url, icon=icon, category=category, section=section, order=order)
+    new_link = ServiceLink(name=name, url=url, icon=icon, description=description, category=category, section=section, order=order)
     db.session.add(new_link)
     db.session.commit()
     flash('Enlace agregado exitosamente.', 'success')

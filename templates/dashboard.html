@@ -76,7 +76,7 @@
         <div class="row g-3 justify-content-center">
             {% for link in links if link.section == 'main' %}
             <div class="col-6 col-md-3 col-lg-2 link-card-container">
-                <a href="{{ link.url }}" target="_blank" class="text-decoration-none">
+                <a href="{{ link.url }}" target="_blank" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ link.description }}">
                     <div class="card h-100 service-card border-0 shadow-sm rounded-4 text-center transition-all">
                         <div class="card-body d-flex flex-column align-items-center justify-content-center p-3">
                             <div class="icon-wrapper mb-2 rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 54px; height: 54px;">
@@ -101,7 +101,7 @@
         <div class="row g-3 justify-content-center mb-5">
             {% for link in links if link.section == 'tutorial' %}
             <div class="col-6 col-md-3 col-lg-2 link-card-container">
-                <a href="{{ link.url }}" target="_blank" class="text-decoration-none">
+                <a href="{{ link.url }}" target="_blank" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ link.description }}">
                     <div class="card h-100 service-card border-0 shadow-sm rounded-4 text-center transition-all">
                         <div class="card-body d-flex flex-column align-items-center justify-content-center p-3">
                             <div class="icon-wrapper mb-2 rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 54px; height: 54px; background-color: #ffe6e6;">
@@ -124,22 +124,61 @@
         </div>
 
         <div class="row g-3 justify-content-center">
-            {% for link in links if link.section == 'support' %}
-            <div class="col-6 col-md-3 col-lg-2 link-card-container">
-                <!-- Using link.url and splitting the email for the clipboard copy -->
-                <a href="{{ link.url }}" target="_blank" class="text-decoration-none support-link" 
-                   data-email="{% if 'to=' in link.url %}{{ link.url.split('to=')[1] }}{% else %}{{ link.url }}{% endif %}" title="Clic para copiar">
+            <!-- Soporte Correo -->
+            <div class="col-6 col-md-3 col-lg-2 link-card-container" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Contactar soporte por problemas de correo">
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=soporte.correo@unach.cl&su=Problema%20Acceso%20Correo%20-%20{{ user.username }}&body=Hola%20equipo%20de%20soporte%2C%20mi%20usuario%20es%20{{ user.username }}." target="_blank" class="text-decoration-none support-link">
                     <div class="card h-100 service-card border-0 shadow-sm rounded-4 text-center transition-all">
                         <div class="card-body d-flex flex-column align-items-center justify-content-center p-3">
                             <div class="icon-wrapper mb-2 rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 54px; height: 54px;">
-                                <i class="bi {{ link.icon }} fs-2 text-unach icon-unach"></i>
+                                <i class="bi bi-envelope-at-fill fs-2 text-unach icon-unach"></i>
                             </div>
-                            <h6 class="card-title text-dark fw-semibold mb-0 link-name" style="font-size: 0.95rem;">{{ link.name }}</h6>
+                            <h6 class="card-title text-dark fw-semibold mb-0 link-name" style="font-size: 0.95rem;">Soporte Correo</h6>
                         </div>
                     </div>
                 </a>
             </div>
-            {% endfor %}
+
+            <!-- Soporte Umas -->
+            <div class="col-6 col-md-3 col-lg-2 link-card-container" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Contactar soporte por problemas en U+">
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=soporte.umas@unach.cl&su=Soporte%20Umas%20-%20{{ user.username }}&body=Hola%20equipo%20de%20soporte%2C%20mi%20usuario%20es%20{{ user.username }}." target="_blank" class="text-decoration-none support-link">
+                    <div class="card h-100 service-card border-0 shadow-sm rounded-4 text-center transition-all">
+                        <div class="card-body d-flex flex-column align-items-center justify-content-center p-3">
+                            <div class="icon-wrapper mb-2 rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 54px; height: 54px;">
+                                <i class="bi bi-envelope-at-fill fs-2 text-unach icon-unach"></i>
+                            </div>
+                            <h6 class="card-title text-dark fw-semibold mb-0 link-name" style="font-size: 0.95rem;">Soporte U+ (Umas)</h6>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Soporte Sacint -->
+            <div class="col-6 col-md-3 col-lg-2 link-card-container" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Contactar soporte por problemas en Sacint">
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=sacint@unach.cl&su=Consulta%20Sacint%20-%20{{ user.username }}&body=Hola%20equipo%20de%20soporte%2C%20mi%20usuario%20es%20{{ user.username }}." target="_blank" class="text-decoration-none support-link">
+                    <div class="card h-100 service-card border-0 shadow-sm rounded-4 text-center transition-all">
+                        <div class="card-body d-flex flex-column align-items-center justify-content-center p-3">
+                            <div class="icon-wrapper mb-2 rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 54px; height: 54px;">
+                                <i class="bi bi-envelope-at-fill fs-2 text-unach icon-unach"></i>
+                            </div>
+                            <h6 class="card-title text-dark fw-semibold mb-0 link-name" style="font-size: 0.95rem;">Soporte Sacint</h6>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Soporte Sistemas -->
+            <div class="col-6 col-md-3 col-lg-2 link-card-container" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Contactar soporte técnico general">
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=soporte@unach.cl&su=Soporte%20Sistemas%20General%20-%20{{ user.username }}&body=Hola%20equipo%20de%20soporte%2C%20mi%20usuario%20es%20{{ user.username }}." target="_blank" class="text-decoration-none support-link">
+                    <div class="card h-100 service-card border-0 shadow-sm rounded-4 text-center transition-all">
+                        <div class="card-body d-flex flex-column align-items-center justify-content-center p-3">
+                            <div class="icon-wrapper mb-2 rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 54px; height: 54px;">
+                                <i class="bi bi-envelope-at-fill fs-2 text-unach icon-unach"></i>
+                            </div>
+                            <h6 class="card-title text-dark fw-semibold mb-0 link-name" style="font-size: 0.95rem;">Soporte Sistemas</h6>
+                        </div>
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
     
@@ -178,57 +217,32 @@
             const themeIcon = document.getElementById('themeIcon');
             const body = document.body;
             
-            // Check saved theme
-            const savedTheme = localStorage.getItem('portalTheme');
-            if (savedTheme === 'dark') {
-                body.setAttribute('data-theme', 'dark');
-                themeIcon.classList.replace('bi-moon-stars-fill', 'bi-sun-fill');
-            }
-
-            themeToggle.addEventListener('click', () => {
-                const isDark = body.getAttribute('data-theme') === 'dark';
-                
-                if (isDark) {
-                    body.removeAttribute('data-theme');
-                    localStorage.setItem('portalTheme', 'light');
-                    themeIcon.classList.replace('bi-sun-fill', 'bi-moon-stars-fill');
-                } else {
+            if (themeToggle) {
+                // Check saved theme
+                const savedTheme = localStorage.getItem('portalTheme');
+                if (savedTheme === 'dark') {
                     body.setAttribute('data-theme', 'dark');
-                    localStorage.setItem('portalTheme', 'dark');
                     themeIcon.classList.replace('bi-moon-stars-fill', 'bi-sun-fill');
                 }
-            });
 
-            // Support links copy functionality
-            const supportLinks = document.querySelectorAll('.support-link');
-            supportLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    const email = this.getAttribute('data-email');
-                    if(email) {
-                        navigator.clipboard.writeText(email).then(() => {
-                            const icon = this.querySelector('i.bi');
-                            const textElem = this.querySelector('h6');
-                            const originalClass = icon.className;
-                            const originalText = textElem.innerText;
-                            
-                            icon.className = 'bi bi-check-circle-fill fs-2 text-success icon-unach';
-                            textElem.innerText = '¡Copiado!';
-                            if (textElem.classList.contains('text-dark')) {
-                                textElem.classList.replace('text-dark', 'text-success');
-                            } else {
-                                textElem.classList.add('text-success');
-                            }
-                            
-                            setTimeout(() => {
-                                icon.className = originalClass;
-                                textElem.innerText = originalText;
-                                textElem.classList.replace('text-success', 'text-dark');
-                            }, 2000);
-                        }).catch(err => {
-                            console.error('Failed to copy email: ', err);
-                        });
+                themeToggle.addEventListener('click', () => {
+                    const isDark = body.getAttribute('data-theme') === 'dark';
+                    if (isDark) {
+                        body.removeAttribute('data-theme');
+                        localStorage.setItem('portalTheme', 'light');
+                        themeIcon.classList.replace('bi-sun-fill', 'bi-moon-stars-fill');
+                    } else {
+                        body.setAttribute('data-theme', 'dark');
+                        localStorage.setItem('portalTheme', 'dark');
+                        themeIcon.classList.replace('bi-moon-stars-fill', 'bi-sun-fill');
                     }
                 });
+            }
+
+            // Initialize tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
             });
         });
     </script>

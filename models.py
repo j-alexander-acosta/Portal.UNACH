@@ -8,6 +8,7 @@ class ServiceLink(db.Model):
     name = db.Column(db.String(100), nullable=False)
     url = db.Column(db.String(255), nullable=False)
     icon = db.Column(db.String(50), nullable=False)
+    description = db.Column(db.String(255), nullable=True)
     category = db.Column(db.String(50), nullable=False) # 'comunes', 'alumnos', 'funcionarios'
     section = db.Column(db.String(50), default='main') # 'main', 'tutorial', 'support'
     is_active = db.Column(db.Boolean, default=True)

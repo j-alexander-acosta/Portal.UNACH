@@ -60,6 +60,7 @@
                                 <th>Orden</th>
                                 <th>Icono</th>
                                 <th>Nombre</th>
+                                <th>Descripción</th>
                                 <th>URL</th>
                                 <th>Estado</th>
                                 <th class="pe-4 text-end">Acciones</th>
@@ -78,6 +79,7 @@
                                 <td>{{ link.order }}</td>
                                 <td><i class="bi {{ link.icon }} fs-4 text-unach"></i></td>
                                 <td class="fw-bold">{{ link.name }}</td>
+                                <td>{{ link.description or '' }}</td>
                                 <td><a href="{{ link.url }}" target="_blank" class="text-truncate d-inline-block" style="max-width: 250px;">{{ link.url }}</a></td>
                                 <td>
                                     {% if link.is_active %}
@@ -114,6 +116,10 @@
                                                         <div class="mb-3">
                                                             <label class="form-label fw-semibold">Nombre del Servicio</label>
                                                             <input type="text" class="form-control" name="name" value="{{ link.name }}" required placeholder="Ej. Portal de Notas">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label class="form-label fw-semibold">Descripción (Estilo Tooltip)</label>
+                                                            <input type="text" class="form-control" name="description" value="{{ link.description or '' }}" placeholder="Ej. Revisa tus calificaciones">
                                                         </div>
                                                         <div class="mb-3">
                                                             <label class="form-label fw-semibold">URL de Destino</label>
@@ -198,6 +204,10 @@
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Nombre del Servicio</label>
                             <input type="text" class="form-control" name="name" required placeholder="Ej. Portal de Notas">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Descripción (Estilo Tooltip)</label>
+                            <input type="text" class="form-control" name="description" placeholder="Ej. Revisa tus calificaciones">
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-semibold">URL de Destino</label>
