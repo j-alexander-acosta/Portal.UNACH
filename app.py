@@ -175,6 +175,7 @@ def admin_link_edit(link_id):
     link.name = request.form.get('name')
     link.url = request.form.get('url')
     link.icon = request.form.get('icon')
+    link.description = request.form.get('description', '')
     link.category = request.form.get('category')
     link.section = request.form.get('section', 'main')
     link.order = request.form.get('order', type=int, default=0)
