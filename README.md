@@ -11,19 +11,23 @@ El **Portal UNACH** es una plataforma centralizada (HUB) desarrollada en Python 
 *   **Personalización Dinámica:**
     *   **Saludos Sensibles al Tiempo:** El sistema detecta la hora local ("Buenos días", "Buenas tardes", "Buenas noches").
     *   **Mensajes por Rol:** Los alumnos y los funcionarios reciben textos de bienvenida, instrucciones y colores de acento distintos.
-    *   **Procesamiento de Email:** Toma nombres formados como `juan.perez@alu.unach.cl` y los formatea elegantemente a "Juan Perez" en la interfaz.
+    *   **Procesamiento de Email:** Toma nombres como `juan.perez@alu.unach.cl` y los formatea a "Juan Perez" en la interfaz.
 *   **Experiencia de Usuario (UX/UI):**
-    *   **Agrupación Dinámica:** Los enlaces se clasifican y muestran en 3 distintas secciones lógicas: Servicios Principales, Tutoriales y Contacto de Soporte.
-    *   **Buscador en Tiempo Real:** Permite a los usuarios buscar un enlace específico en la pantalla escribiendo su nombre (ej. "SIGAE").
+    *   **Tooltips Descriptivos:** Cada botón de servicio muestra una descripción contextual al pasar el cursor.
+    *   **Sección de Tutoriales:** Acceso directo a videotutoriales de YouTube para Umas, Sacint, Correo Institucional y Office.
+    *   **Contacto de Soporte:** Botones que abren Gmail directamente en el navegador con el correo del destinatario, asunto y nombre de usuario precargados.
+    *   **Agrupación Dinámica:** Los enlaces se clasifican en 3 secciones: Servicios Principales, Tutoriales y Contacto de Soporte.
+    *   **Buscador en Tiempo Real:** Permite buscar un servicio escribiendo su nombre (ej. "SIGAE").
     *   **Modo Oscuro (Dark Mode):** Alternador de tema persistente gestionado mediante `localStorage`.
-    *   Diseño limpio usando componentes de Bootstrap 5 e iconos Bootstrap (Bootstrap Icons).
+    *   Diseño limpio usando Bootstrap 5 y Bootstrap Icons.
 *   **Panel de Administración (Backend CRUD):**
-    *   Usuarios designados en el archivo protegido `.env` obtienen permisos de administrador.
-    *   El administrador cuenta con una interfaz web en `/admin` para agregar, editar, categorizar por sección y eliminar enlaces de la base de datos sin necesidad de tocar código. También soporta agrupación visual por sección (Principal, Tutoriales, Soporte).
-    *   **Sistema de Doble Verificación:** Un administrador debe pasar por una doble autenticación para ver la opción del Panel Admin.
+    *   Usuarios designados en `.env` obtienen permisos de administrador.
+    *   El administrador puede agregar, editar, categorizar y eliminar enlaces desde `/admin`, incluyendo la descripción para el tooltip.
+    *   **Sistema de Doble Verificación:** Autenticación en dos pasos para acceder al panel admin.
 *   **Seguridad Refinada:**
-    *   Las sesiones caducan automáticamente luego de 60 minutos de inactividad, ideal para usar en laboratorios de la universidad.
-    *   Bloqueos para accesos no autorizados a las URL directas como `/dashboard` o `/admin`.
+    *   Las sesiones caducan automáticamente luego de 60 minutos.
+    *   Bloqueos de acceso directo a URL protegidas como `/dashboard` o `/admin`.
+
 
 ---
 
