@@ -4,10 +4,14 @@ El **Portal UNACH** es una plataforma centralizada (HUB) desarrollada en Python 
 
 ## Características Principales
 
-*   **Segmentación por Dominio:** El portal actúa como "portero", permitiendo accesos y mostrando contenido de forma condicional:
-    *   `@unach.cl`: Perfil **Funcionario** (accesos administrativos, herramientas de gestión docente).
+*   **Segmentación por Rol y Dominio:** El portal evalúa una combinación de selección de usuario y verificación de correo:
+    *   Pantalla interactiva de 3 perfiles (Alumnos, Docentes, Funcionarios) previa a la solicitud de correo.
+    *   `@unach.cl`: Asigna el perfil **Docente** o **Funcionario** basándose en la elección del usuario.
     *   `@alu.unach.cl`: Perfil **Alumno** (acceso a notas, intranet estudiantil, UMAS estudiantes).
-    *   Correos de otros dominios (ej. `@gmail.com`) son rechazados con un mensaje de "Acceso restringido".
+    *   Correos de otros dominios son rechazados con "Acceso restringido".
+*   **Clasificación Flexible y Visual:**
+    *   Nueva sección visual y categoría dedicada exclusivamente a herramientas para "Docentes".
+    *   Soporte para múltiples categorías por enlace (ej. un mismo servicio puede configurarse para ser visible a Docentes y Funcionarios al mismo tiempo).
 *   **Personalización Dinámica:**
     *   **Saludos Sensibles al Tiempo:** El sistema detecta la hora local ("Buenos días", "Buenas tardes", "Buenas noches").
     *   **Mensajes por Rol:** Los alumnos y los funcionarios reciben textos de bienvenida, instrucciones y colores de acento distintos.

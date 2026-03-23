@@ -69,7 +69,7 @@
                         <tbody>
 {% macro render_admin_row(link) %}
                             <tr {% if not link.is_active %}class="table-secondary text-muted"{% endif %}>
-                                <td class="ps-4 fw-semibold text-capitalize">{{ link.category }}</td>
+                                <td class="ps-4 fw-semibold text-capitalize">{{ link.category.replace(',', ', ') }}</td>
                                 <td class="text-capitalize">
                                     {% if link.section == 'main' %}Principal
                                     {% elif link.section == 'tutorial' %}Tutorial
@@ -140,11 +140,13 @@
                                                             </div>
                                                             <div class="col-md-4 mb-3">
                                                                 <label class="form-label fw-semibold">Categoría</label>
-                                                                <select class="form-select" name="category" required>
-                                                                    <option value="comunes" {% if link.category == 'comunes' %}selected{% endif %}>Comunes</option>
-                                                                    <option value="alumnos" {% if link.category == 'alumnos' %}selected{% endif %}>Solo Alumnos</option>
-                                                                    <option value="funcionarios" {% if link.category == 'funcionarios' %}selected{% endif %}>Solo Funcionarios</option>
+                                                                <select class="form-select" name="category" multiple required size="4">
+                                                                    <option value="comunes" {% if 'comunes' in link.category %}selected{% endif %}>Comunes</option>
+                                                                    <option value="alumnos" {% if 'alumnos' in link.category %}selected{% endif %}>Solo Alumnos</option>
+                                                                    <option value="funcionarios" {% if 'funcionarios' in link.category %}selected{% endif %}>Solo Funcionarios</option>
+                                                                    <option value="docentes" {% if 'docentes' in link.category %}selected{% endif %}>Solo Docentes</option>
                                                                 </select>
+                                                                <div class="form-text mt-1 text-muted" style="font-size: 0.8rem;"><i class="bi bi-info-circle me-1"></i>Ctrl/Cmd + Clic para seleccionar múltiples.</div>
                                                             </div>
                                                             <div class="col-md-4 mb-3">
                                                                 <label class="form-label fw-semibold">Orden (Prioridad)</label>
@@ -228,11 +230,13 @@
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label class="form-label fw-semibold">Categoría</label>
-                                <select class="form-select" name="category" required>
+                                <select class="form-select" name="category" multiple required size="4">
                                     <option value="comunes">Comunes</option>
                                     <option value="alumnos">Solo Alumnos</option>
                                     <option value="funcionarios">Solo Funcionarios</option>
+                                    <option value="docentes">Solo Docentes</option>
                                 </select>
+                                <div class="form-text mt-1 text-muted" style="font-size: 0.8rem;"><i class="bi bi-info-circle me-1"></i>Ctrl/Cmd + Clic para seleccionar múltiples.</div>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label class="form-label fw-semibold">Orden (Prioridad)</label>

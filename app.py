@@ -28,6 +28,7 @@ def login():
 
     if request.method == 'POST':
         email = request.form.get('email', '').strip().lower()
+        role = request.form.get('role', '')
         if not email:
             flash('Por favor ingrese su correo.', 'warning')
             return redirect(url_for('login'))
@@ -40,12 +41,12 @@ def login():
             password = request.form.get('password')
             if password is None:
                 # Ask for password step
-                return render_template('login.html', require_password=True, email=email)
+                return render_template('login.html', require_password=True, email=email, role=role)
             
             admin_password = os.environ.get('ADMIN_PASSWORD', '')
             if password != admin_password:
                 flash('Contraseña de administrador incorrecta.', 'danger')
-                return render_template('login.html', require_password=True, email=email)
+                return render_template('login.html', require_password=True, email=email, role=role)
             
             session.permanent = True
             session['profile'] = 'Admin'
@@ -53,7 +54,7 @@ def login():
             return redirect(url_for('dashboard'))
         elif email.endswith('@unach.cl'):
             session.permanent = True
-            session['profile'] = 'Funcionario'
+            session['profile'] = role if role in ['Docente', 'Funcionario'] else 'Funcionario'
             session['email'] = email
             return redirect(url_for('dashboard'))
         elif email.endswith('@alu.unach.cl'):
@@ -86,15 +87,21 @@ def dashboard():
         greeting = "Buenas noches"
     
     # Query database for active links
-    common_links = ServiceLink.query.filter_by(category='comunes', is_active=True).all()
+    common_links = ServiceLink.query.filter(ServiceLink.category.contains('comunes'), ServiceLink.is_active==True).all()
     
     profile_links = []
     if profile == 'Alumno':
-        profile_links = ServiceLink.query.filter_by(category='alumnos', is_active=True).all()
-    elif profile in ['Funcionario', 'Admin']:
-        profile_links = ServiceLink.query.filter_by(category='funcionarios', is_active=True).all()
+        profile_links = ServiceLink.query.filter(ServiceLink.category.contains('alumnos'), ServiceLink.is_active==True).all()
+    elif profile == 'Docente':
+        profile_links = ServiceLink.query.filter(ServiceLink.category.contains('docentes'), ServiceLink.is_active==True).all()
+    elif profile == 'Funcionario':
+        profile_links = ServiceLink.query.filter(ServiceLink.category.contains('funcionarios'), ServiceLink.is_active==True).all()
+    elif profile == 'Admin':
+        func_links = ServiceLink.query.filter(ServiceLink.category.contains('funcionarios'), ServiceLink.is_active==True).all()
+        doc_links = ServiceLink.query.filter(ServiceLink.category.contains('docentes'), ServiceLink.is_active==True).all()
+        profile_links = list({link.id: link for link in (func_links + doc_links)}.values())
         
-    all_links = sorted(common_links + profile_links, key=lambda x: x.order)
+    all_links = sorted(list({link.id: link for link in (common_links + profile_links)}.values()), key=lambda x: x.order)
     
     # Extract username from email
     email = session.get('email', '')
@@ -140,11 +147,12 @@ def admin_link_add():
     url = request.form.get('url')
     icon = request.form.get('icon')
     description = request.form.get('description')
-    category = request.form.get('category')
+    categories = request.form.getlist('category')
+    category_str = ','.join(categories) if categories else 'comunes'
     section = request.form.get('section', 'main')
     order = request.form.get('order', type=int, default=0)
     
-    new_link = ServiceLink(name=name, url=url, icon=icon, description=description, category=category, section=section, order=order)
+    new_link = ServiceLink(name=name, url=url, icon=icon, description=description, category=category_str, section=section, order=order)
     db.session.add(new_link)
     db.session.commit()
     flash('Enlace agregado exitosamente.', 'success')
@@ -176,7 +184,8 @@ def admin_link_edit(link_id):
     link.url = request.form.get('url')
     link.icon = request.form.get('icon')
     link.description = request.form.get('description', '')
-    link.category = request.form.get('category')
+    categories = request.form.getlist('category')
+    link.category = ','.join(categories) if categories else 'comunes'
     link.section = request.form.get('section', 'main')
     link.order = request.form.get('order', type=int, default=0)
     
