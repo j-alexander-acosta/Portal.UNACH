@@ -1,0 +1,8 @@
+venv/
+__pycache__/
+.git/
+.env
+portal.db
+data/
+Dockerfile
+docker-compose.yml

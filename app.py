@@ -13,7 +13,8 @@ app.permanent_session_lifetime = timedelta(minutes=60)
 
 # Database Configuration
 basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'portal.db')
+db_path = os.environ.get('DATABASE_PATH', os.path.join(basedir, 'portal.db'))
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_path
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
