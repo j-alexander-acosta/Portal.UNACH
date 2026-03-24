@@ -34,3 +34,8 @@ dist/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Ignorar archivos locales persistentes de Docker y empaquetados
+data/
+*.tar
+*.tar.gz
