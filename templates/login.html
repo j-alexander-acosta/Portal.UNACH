@@ -17,8 +17,8 @@
             <div class="card login-card shadow-lg border-0 rounded-4">
                 <div class="card-body p-5">
                     <div class="text-center mb-4">
-                        <h2 class="fw-bold text-unach">Portal UNACH</h2>
-                        <p class="text-muted">Conectividad Universitaria</p>
+                        <h2 id="mainTitle" class="fw-bold text-unach">Portal UNACH</h2>
+                        <p id="welcomeMessage" class="text-muted">Conectividad Universitaria</p>
                     </div>
 
                     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -56,6 +56,11 @@
                         </div>
                     </form>
                     {% else %}
+                    <!-- Formulario Oculto para Ingreso Directo -->
+                    <form action="{{ url_for('login') }}" method="POST" id="directRoleForm" style="display: none;">
+                        <input type="hidden" name="role" id="directRoleInput" value="">
+                    </form>
+
                     <!-- PASO 1: Selección de Perfil -->
                     <div id="roleSelectionStep">
                         <h5 class="text-center text-unach mb-4 fw-bold">Selecciona tu Perfil de Ingreso</h5>
@@ -85,23 +90,24 @@
                                 </div>
                             </button>
                         </div>
+                        <div class="text-center mt-4">
+                            <button type="button" class="btn btn-link text-decoration-none text-muted small" id="btnShowAdmin">
+                                <i class="bi bi-shield-lock me-1"></i> Ingreso Administrador
+                            </button>
+                        </div>
                     </div>
 
-                    <!-- PASO 2: Ingreso de Correo -->
+                    <!-- PASO 2: Ingreso de Correo (Solo Admin) -->
                     <form action="{{ url_for('login') }}" method="POST" id="emailFormStep" style="display: none;">
-                        <input type="hidden" name="role" id="selectedRoleInput" value="">
-                        
-                        <div class="mb-4 text-center">
-                            <span class="badge bg-unach text-white px-3 py-2 fs-6 shadow-sm rounded-pill" id="selectedRoleBadge"></span>
-                        </div>
+                        <input type="hidden" name="role" id="selectedRoleInput" value="Admin">
 
                         <div class="mb-4">
-                            <label for="email" class="form-label fw-semibold">Correo Institucional (Google Workspace)</label>
+                            <label for="email" class="form-label fw-semibold">Correo de Administrador</label>
                             <div class="input-group mb-3 shadow-sm rounded-3">
                                 <span class="input-group-text bg-white border-end-0 text-muted">
                                     <i class="bi bi-google"></i>
                                 </span>
-                                <input type="email" class="form-control border-start-0" id="email" name="email" placeholder="usuario@...unach.cl" required autocomplete="email">
+                                <input type="email" class="form-control border-start-0" id="email" name="email" placeholder="admin@unach.cl" required autocomplete="email">
                             </div>
                         </div>
                         <button type="submit" class="btn btn-unach w-100 py-3 rounded-3 fw-bold mb-3 shadow-sm transition-all text-uppercase">
@@ -125,10 +131,13 @@
             const roleBtns = document.querySelectorAll('.role-btn');
             const roleSelectionStep = document.getElementById('roleSelectionStep');
             const emailFormStep = document.getElementById('emailFormStep');
-            const selectedRoleInput = document.getElementById('selectedRoleInput');
-            const selectedRoleBadge = document.getElementById('selectedRoleBadge');
+            const btnShowAdmin = document.getElementById('btnShowAdmin');
             const btnBackToRoles = document.getElementById('btnBackToRoles');
             const emailInput = document.getElementById('email');
+            const mainTitle = document.getElementById('mainTitle');
+            const welcomeMessage = document.getElementById('welcomeMessage');
+            const directRoleForm = document.getElementById('directRoleForm');
+            const directRoleInput = document.getElementById('directRoleInput');
 
             if (roleBtns.length > 0) {
                 // Add hover effect style dynamically if not in css
@@ -142,23 +151,29 @@
                 roleBtns.forEach(btn => {
                     btn.addEventListener('click', function() {
                         const role = this.getAttribute('data-role');
-                        selectedRoleInput.value = role;
-                        selectedRoleBadge.innerHTML = '<i class="bi bi-person-check me-1"></i> Perfil: ' + role;
-                        
-                        // Switch UI
-                        roleSelectionStep.style.display = 'none';
-                        emailFormStep.style.display = 'block';
-                        
-                        // Focus the email input
-                        setTimeout(() => emailInput.focus(), 100);
+                        directRoleInput.value = role;
+                        directRoleForm.submit();
                     });
                 });
 
-                btnBackToRoles.addEventListener('click', function() {
-                    emailFormStep.style.display = 'none';
-                    roleSelectionStep.style.display = 'block';
-                    selectedRoleInput.value = '';
-                });
+                if (btnShowAdmin) {
+                    btnShowAdmin.addEventListener('click', function() {
+                        mainTitle.textContent = 'Acceso Administrador';
+                        welcomeMessage.style.display = 'none';
+                        roleSelectionStep.style.display = 'none';
+                        emailFormStep.style.display = 'block';
+                        setTimeout(() => emailInput.focus(), 100);
+                    });
+                }
+
+                if (btnBackToRoles) {
+                    btnBackToRoles.addEventListener('click', function() {
+                        emailFormStep.style.display = 'none';
+                        roleSelectionStep.style.display = 'block';
+                        mainTitle.textContent = 'Portal UNACH';
+                        welcomeMessage.style.display = 'block';
+                    });
+                }
             }
         });
     </script>

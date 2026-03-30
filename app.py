@@ -30,8 +30,14 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email', '').strip().lower()
         role = request.form.get('role', '')
+        if not email and role in ['Alumno', 'Docente', 'Funcionario']:
+            session.permanent = True
+            session['profile'] = role
+            session['email'] = f"{role.lower()}@unach.cl"
+            return redirect(url_for('dashboard'))
+
         if not email:
-            flash('Por favor ingrese su correo.', 'warning')
+            flash('Por favor ingrese su correo de administrador.', 'warning')
             return redirect(url_for('login'))
         
         # Check if Admin
@@ -51,16 +57,6 @@ def login():
             
             session.permanent = True
             session['profile'] = 'Admin'
-            session['email'] = email
-            return redirect(url_for('dashboard'))
-        elif email.endswith('@unach.cl'):
-            session.permanent = True
-            session['profile'] = role if role in ['Docente', 'Funcionario'] else 'Funcionario'
-            session['email'] = email
-            return redirect(url_for('dashboard'))
-        elif email.endswith('@alu.unach.cl'):
-            session.permanent = True
-            session['profile'] = 'Alumno'
             session['email'] = email
             return redirect(url_for('dashboard'))
         else:
